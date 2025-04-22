@@ -67,7 +67,6 @@ body {
     letter-spacing: 0.01em;
     text-transform: lowercase;
     white-space: nowrap;
-    /* text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); */
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     opacity: 0.95;
     animation: welcomeFadeIn 1s ease-out forwards;
@@ -89,24 +88,7 @@ body {
     flex-direction: column;
     gap: 12px;
     max-width: 400px;
-}
-
-.category-button {
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
-    padding: 12px 24px;
-    border-radius: 12px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: #4158D0;
-    font-weight: 500;
-}
-
-.category-button:hover {
-    background: rgba(255, 255, 255, 1);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: none !important; /* Hide the categories container by default */
 }
 
 /* Tasks container */
@@ -201,10 +183,6 @@ body {
 }
 
 input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    border-radius: 6px;
-    cursor: pointer;
     width: 20px;
     height: 20px;
     border-radius: 6px;
@@ -464,11 +442,6 @@ input[type="checkbox"]:checked+.task-text {
     opacity: 1;
 }
 
-#categories-container {
-    display: none !important;
-    /* Hide the categories container by default */
-}
-
 .thank-you-message {
     position: fixed;
     top: 80%;
@@ -555,4 +528,103 @@ input[type="checkbox"]:checked+.task-text {
 
 #complete-challenge-button:hover {
     background-color: #0a7a1d;
+}
+
+/* Gratitude Log Styles */
+#gratitude-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1000;
+    max-width: 300px;
+}
+
+#gratitude-input {
+    width: calc(100% - 16px); /* Adjust width to fit within the container padding */
+    height: 80px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    margin-bottom: 8px;
+    resize: none;
+}
+
+#gratitude-input:focus {
+    outline: none;
+    border-color: #4158D0;
+    box-shadow: 0 0 4px rgba(65, 88, 208, 0.5);
+}
+
+#gratitude-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+#gratitude-buttons button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#save-gratitude {
+    background-color: #0c9623;
+    color: white;
+}
+
+#save-gratitude:hover {
+    background-color: #0a7a1d;
+}
+
+#view-gratitude-log {
+    background-color: #4158D0;
+    color: white;
+}
+
+#view-gratitude-log:hover {
+    background-color: #2c3e99;
+}
+
+#gratitude-log-display {
+    margin-top: 12px;
+    max-height: 200px;
+    overflow-y: auto;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Encouragement Bubble Styles */
+.encouragement-bubble {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    color: #4158D0;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    font-family: 'Slackside One', sans-serif;
+    text-transform: lowercase;
 }
