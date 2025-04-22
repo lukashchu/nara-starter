@@ -11,6 +11,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const resetYesButton = document.getElementById("reset-yes");
   const resetNoButton = document.getElementById("reset-no");
 
+  const weeklyChallengeContainer = document.getElementById("weekly-challenge-container");
+  const weeklyChallengeText = document.getElementById("weekly-challenge-text");
+  const completeChallengeButton = document.getElementById("complete-challenge-button");
+
+  chrome.storage.local.get(["weeklyChallenge", "challengeCompleted"], (data) => {
+    if (data.weeklyChallenge) {
+      weeklyChallengeText.textContent = data.weeklyChallenge;
+      weeklyChallengeContainer.classList.remove("hidden");
+
+      if (data.challengeCompleted) {
+        completeChallengeButton.textContent = "Challenge Completed!";
+        completeChallengeButton.disabled = true;
+      }
+    }
+  });
+
+  completeChallengeButton.addEventListener("click", () => {
+    chrome.storage.local.set({ challengeCompleted: true }, () => {
+      completeChallengeButton.textContent = "Challenge Completed!";
+      completeChallengeButton.disabled = true;
+    });
+  });
+
   // for controlling when hovers are active
   let hoverListeners = [];
 
@@ -564,6 +587,12 @@ document.addEventListener("DOMContentLoaded", () => {
       circle.classList.remove("hidden");
     });
 
+    // Hide the weekly challenge when resetting
+    toggleWeeklyChallengeVisibility(false);
+
+    // Hide the mood selector when resetting
+    toggleMoodSelectorVisibility(false);
+
     // Hide the reset modal
     resetModal.classList.add("hidden");
   });
@@ -644,6 +673,52 @@ document.addEventListener("DOMContentLoaded", () => {
       if (a.completed === b.completed) return 0;
       return a.completed ? -1 : 1;
     });
+  }
+
+  function renderWeeklyChallenge() {
+    const weeklyChallengeContainer = document.getElementById("weekly-challenge-container");
+    const weeklyChallengeText = document.getElementById("weekly-challenge-text");
+    const completeChallengeButton = document.getElementById("complete-challenge-button");
+
+    chrome.storage.local.get(["weeklyChallenge", "challengeCompleted"], (data) => {
+      if (data.weeklyChallenge) {
+        weeklyChallengeText.textContent = data.weeklyChallenge;
+        weeklyChallengeContainer.classList.remove("hidden");
+
+        if (data.challengeCompleted) {
+          completeChallengeButton.textContent = "Challenge Completed!";
+          completeChallengeButton.disabled = true;
+        } else {
+          completeChallengeButton.textContent = "Mark as Complete";
+          completeChallengeButton.disabled = false;
+        }
+      }
+    });
+
+    completeChallengeButton.addEventListener("click", () => {
+      chrome.storage.local.set({ challengeCompleted: true }, () => {
+        completeChallengeButton.textContent = "Challenge Completed!";
+        completeChallengeButton.disabled = true;
+      });
+    });
+  }
+
+  function toggleWeeklyChallengeVisibility(isVisible) {
+    const weeklyChallengeContainer = document.getElementById("weekly-challenge-container");
+    if (isVisible) {
+      weeklyChallengeContainer.classList.remove("hidden");
+    } else {
+      weeklyChallengeContainer.classList.add("hidden");
+    }
+  }
+
+  function toggleMoodSelectorVisibility(isVisible) {
+    const moodSelection = document.getElementById("mood-selection");
+    if (isVisible) {
+      moodSelection.classList.remove("hidden");
+    } else {
+      moodSelection.classList.add("hidden");
+    }
   }
 
   function renderTasks(tasks, backgroundIndex, category) {
@@ -973,6 +1048,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       },
     });
+
+    // Render weekly challenge within the tasks container
+    renderWeeklyChallenge();
+    toggleWeeklyChallengeVisibility(true);
+
+    // Show mood selector when viewing a list
+    toggleMoodSelectorVisibility(true);
 
     tasksContainer.classList.remove("hidden");
   }

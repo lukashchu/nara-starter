@@ -517,3 +517,42 @@ input[type="checkbox"]:checked+.task-text {
     border-radius: 50%;
     padding: 5px;
 }
+
+/* Weekly Challenge Container */
+#weekly-challenge-container {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1000;
+}
+
+#weekly-challenge-container h2 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+#weekly-challenge-container p {
+    margin: 0 0 12px;
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+#complete-challenge-button {
+    background-color: #0c9623;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#complete-challenge-button:hover {
+    background-color: #0a7a1d;
+}
