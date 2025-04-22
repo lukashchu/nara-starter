@@ -568,6 +568,33 @@ document.addEventListener("DOMContentLoaded", () => {
     resetModal.classList.add("hidden");
   });
 
+  // Mood selection logic
+  const moodSelection = document.getElementById("mood-selection");
+  const moodOptions = document.querySelectorAll(".mood-option");
+
+  moodOptions.forEach((option) => {
+    option.addEventListener("click", () => {
+      const selectedMood = option.dataset.mood;
+      chrome.storage.local.set({ mood: selectedMood }, () => {
+        console.log(`Mood set to: ${selectedMood}`);
+      });
+
+      // Highlight the selected mood
+      moodOptions.forEach((opt) => opt.classList.remove("selected"));
+      option.classList.add("selected");
+    });
+  });
+
+  // Load saved mood on page load
+  chrome.storage.local.get("mood", (data) => {
+    if (data.mood) {
+      const selectedOption = document.querySelector(`.mood-option[data-mood="${data.mood}"]`);
+      if (selectedOption) {
+        selectedOption.classList.add("selected");
+      }
+    }
+  });
+
   function updateBackgroundState(tasks, selectedCategory) {
     const tasksWithContent = tasks.filter((task) => task.text.trim() !== "");
     const completedTasks = tasks.filter(
