@@ -27,6 +27,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Function to show encouragement bubble
+  function showEncouragementBubble(message) {
+    const bubble = document.createElement("div");
+    bubble.className = "encouragement-bubble";
+    bubble.textContent = message;
+
+    // Position the bubble near the deer
+    bubble.style.top = "480px"; // Adjust based on deer position
+    bubble.style.left = "400px"; // Adjust based on deer position
+    document.body.appendChild(bubble);
+
+    // Remove bubble after a delay
+    setTimeout(() => {
+      bubble.style.opacity = "0";
+      setTimeout(() => bubble.remove(), 500); // Remove after transition
+    }, 2000); // Remove after 2 seconds
+  }
+
   completeChallengeButton.addEventListener("click", () => {
     chrome.storage.local.set({ challengeCompleted: true }, () => {
       completeChallengeButton.textContent = "Challenge Completed!";
@@ -774,6 +792,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (tasks[originalIndex].completed) {
           const deleteButton = taskItem.querySelector(".delete-task");
+
+          // Show encouragement bubble
+          const encouragementMessages = [
+            "Great job!", "You're making progress!", "Keep going!",
+          ];
+          const randomMessage = encouragementMessages[Math.floor(Math.random() * encouragementMessages.length)];
+          showEncouragementBubble(randomMessage);
           if (deleteButton) deleteButton.remove();
         }
 
