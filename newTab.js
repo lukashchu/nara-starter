@@ -3,7 +3,57 @@ document.addEventListener("DOMContentLoaded", () => {
   backgroundContainer.className = "background-container";
   document.body.appendChild(backgroundContainer);
 
-  const categoriesContainer = document.getElementById("categories-container");
+    const saveGratitudeButton = document.getElementById("save-gratitude");
+    const gratitudeInput = document.getElementById("gratitude-input");
+
+    // Function to get the current date in YYYY-MM-DD format
+    function getCurrentDate() {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+      const day = String(today.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    // Function to save gratitude entry
+    function saveGratitudeEntry() {
+      const gratitudeText = gratitudeInput.value;
+      const currentDate = getCurrentDate();
+      chrome.storage.local.set({ [currentDate]: gratitudeText }, () => {
+        console.log(`Gratitude entry saved for ${currentDate}`);
+      });
+    }
+
+    const viewGratitudeLogButton = document.getElementById("view-gratitude-log");
+
+    function displayGratitudeLog() {
+        const logDisplay = document.getElementById("gratitude-log-display");
+        // Clear the current content of the div
+        logDisplay.innerHTML = "";
+      
+        // Retrieve all entries from local storage
+        chrome.storage.local.get(null, (items) => {
+          const sortedKeys = Object.keys(items).filter(key => /^\d{4}-\d{2}-\d{2}$/.test(key)).sort();
+          
+          // Create a new paragraph element for each entry
+          sortedKeys.forEach((key) => {
+            const entry = items[key];
+            const paragraph = document.createElement("p");
+            paragraph.textContent = `Date: ${key} Gratitude: ${entry}`;
+            // Append each paragraph to the div
+            logDisplay.appendChild(paragraph);
+          });
+        });
+
+
+    }
+
+    // Event listener for view gratitude log button
+    viewGratitudeLogButton.addEventListener("click", displayGratitudeLog);
+
+    // Event listener for save gratitude button
+    saveGratitudeButton.addEventListener("click", saveGratitudeEntry);
+    const categoriesContainer = document.getElementById("categories-container");
   const tasksContainer = document.getElementById("tasks-container");
   const taskList = document.getElementById("task-list");
   const resetButton = document.getElementById("reset-button");
@@ -20,12 +70,31 @@ document.addEventListener("DOMContentLoaded", () => {
       weeklyChallengeText.textContent = data.weeklyChallenge;
       weeklyChallengeContainer.classList.remove("hidden");
 
+
       if (data.challengeCompleted) {
         completeChallengeButton.textContent = "Challenge Completed!";
         completeChallengeButton.disabled = true;
       }
     }
   });
+
+  // Function to show encouragement bubble
+  function showEncouragementBubble(message) {
+    const bubble = document.createElement("div");
+    bubble.className = "encouragement-bubble";
+    bubble.textContent = message;
+
+    // Position the bubble near the deer
+    bubble.style.top = "480px"; // Adjust based on deer position
+    bubble.style.left = "400px"; // Adjust based on deer position
+    document.body.appendChild(bubble);
+
+    // Remove bubble after a delay
+    setTimeout(() => {
+      bubble.style.opacity = "0";
+      setTimeout(() => bubble.remove(), 500); // Remove after transition
+    }, 2000); // Remove after 2 seconds
+  }
 
   completeChallengeButton.addEventListener("click", () => {
     chrome.storage.local.set({ challengeCompleted: true }, () => {
@@ -774,6 +843,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (tasks[originalIndex].completed) {
           const deleteButton = taskItem.querySelector(".delete-task");
+
+          // Show encouragement bubble
+          const encouragementMessages = [
+            "Great job!", "You're making progress!", "Keep going!",
+          ];
+          const randomMessage = encouragementMessages[Math.floor(Math.random() * encouragementMessages.length)];
+          showEncouragementBubble(randomMessage);
           if (deleteButton) deleteButton.remove();
         }
 
