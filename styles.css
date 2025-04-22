@@ -487,4 +487,72 @@ input[type="checkbox"]:checked+.task-text {
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     opacity: 0.95;
     animation: welcomeFadeIn 1s ease-out forwards;
-    }
+}
+
+/* Mood Selection Styles */
+#mood-selection {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.mood-option {
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.mood-option:hover {
+    transform: scale(1.2);
+}
+
+.mood-option.selected {
+    border: 2px solid #4158D0;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+/* Weekly Challenge Container */
+#weekly-challenge-container {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1000;
+}
+
+#weekly-challenge-container h2 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+#weekly-challenge-container p {
+    margin: 0 0 12px;
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+#complete-challenge-button {
+    background-color: #0c9623;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#complete-challenge-button:hover {
+    background-color: #0a7a1d;
+}
